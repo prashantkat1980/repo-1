@@ -1,0 +1,29 @@
+name: Multi-Environment Deployment
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+        environment:
+          description: 'Environment to deploy to'
+          required: true
+          default: 'dev' # Adjust the default environment as needed
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [dev, test, prod]
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      # Add your build steps here (e.g., compiling code)
+
+      - name: Deploy to ${{ matrix.environment }}
+        run: |
+          echo "Deploying to ${{ matrix.environment }}"
+          # Add your deployment commands here (e.g., copy files to server)
+
+      # Add other steps like tests, notifications, etc.
