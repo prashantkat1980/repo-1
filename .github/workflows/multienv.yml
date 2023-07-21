@@ -1,9 +1,9 @@
 name: Multi-Environment Deployment
 on:
-  push:
-    branches:
-      - main
-  workflow_call:
+#   push:
+#     branches:
+#       - main
+  workflow_dispatch:
     inputs:
         environment:
           description: 'Environment to deploy to'
