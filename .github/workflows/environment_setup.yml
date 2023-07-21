@@ -1,0 +1,37 @@
+name: Environment SetupWorkflow
+on:
+    push:
+        branches: 
+            - main
+    workflow_call:
+env:
+  OIDC_ROLE_DEV: github-actions-role
+  OIDC_ROLE_TEST: github-actions-role
+  OIDC_ROLE_PROD: github-actions-role
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                environment: [dev, test, prod]
+        steps:
+            - name: Set up Environment
+              run: echo "setting ip the environment for ${{ matrix.environment }}"
+
+            - name: Login to OIDC for  ${{ matrix.environment }}
+              id: oidc_login
+              run: |
+                ## here, you would have the OIDC login logic to obtain the role based on environment
+                  case " ${{ matrix.environment }}" in
+                  dev) export OIDC_ROLE="$OIDC_ROLE_DEV" ;;
+                  test) export OIDC_ROLE="$OIDC_ROLE_TEST" ;;
+                  prod) export OIDC_ROLE="$OIDC_ROLE_PROD" ;;
+                  *) echo "invalid environment" exit 1 ;;
+                  esac
+## for demostrating purpose, let just echo the OIDC_ROLE
+            - name: Deploy to ${{ matrix.environment }}  
+              run: |
+                echo "Deploying to ${{ matrix.environment }} with OIDC_ROLE: $OIDC_ROLE"
+
+            
