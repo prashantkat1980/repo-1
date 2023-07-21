@@ -1,22 +1,29 @@
 name: Environment SetupWorkflow
 on:
-    push:
-        branches: 
-            - main
+#     push:
+#         branches: 
+#             - main
     workflow_call:
+      inputs:
+        environment:
+          type: string
+          description: environment for deployment
 env:
   OIDC_ROLE_DEV: github-actions-role
   OIDC_ROLE_TEST: github-actions-role
   OIDC_ROLE_PROD: github-actions-role
+  
 
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        #if: metrix.environment == ${{ inputs.environment }}
         strategy:
             matrix:
                 environment: [dev, test, prod]
         steps:
             - name: Set up Environment
+              if: metrix.environment == ${{ inputs.environment }}
               run: echo "setting ip the environment for ${{ matrix.environment }}"
 
             - name: Login to OIDC for  ${{ matrix.environment }}
