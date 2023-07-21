@@ -4,10 +4,15 @@ on:
 #         branches: 
 #             - main
     workflow_call:
+      inputs:
+        environment:
+          type: string
+          description: environment for deployment
 env:
   OIDC_ROLE_DEV: github-actions-role
   OIDC_ROLE_TEST: github-actions-role
   OIDC_ROLE_PROD: github-actions-role
+  environment: ${{ inputs.environment }}
 
 jobs:
     deploy:
