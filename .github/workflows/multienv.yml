@@ -26,7 +26,7 @@ jobs:
         env:
             environment: ${{ inputs.environment}}
         run: |
-          echo "Deploying to $environment"
+          echo "Deploying to ${{ env.environment }}"
           # Add your deployment commands here (e.g., copy files to server)
 
       # Add other steps like tests, notifications, etc.
