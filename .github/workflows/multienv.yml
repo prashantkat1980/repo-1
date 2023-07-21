@@ -13,18 +13,20 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [dev, test, prod]
+    # strategy:
+    #   matrix:
+    #     environment: [dev, test, prod]
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v2
 
       # Add your build steps here (e.g., compiling code)
 
-      - name: Deploy to ${{ matrix.environment }}
+      - name: Deploy to ${{ env.environment }}
+        env:
+            environment: ${{ inputs.environment}}
         run: |
-          echo "Deploying to ${{ matrix.environment }}"
+          echo "Deploying to $environment"
           # Add your deployment commands here (e.g., copy files to server)
 
       # Add other steps like tests, notifications, etc.
