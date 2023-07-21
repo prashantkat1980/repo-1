@@ -3,10 +3,11 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  workflow_call:
     inputs:
         environment:
           description: 'Environment to deploy to'
+          type: string
           required: true
           default: 'dev' # Adjust the default environment as needed
 jobs:
