@@ -22,6 +22,7 @@ jobs:
                 environment: [dev, test, prod]
         steps:
             - name: Set up Environment
+              if: metrix.environment == ${{ inputs.environment }}
               run: echo "setting ip the environment for ${{ matrix.environment }}"
 
             - name: Login to OIDC for  ${{ matrix.environment }}
