@@ -1,8 +1,8 @@
 name: Environment SetupWorkflow
 on:
-    push:
-        branches: 
-            - main
+#     push:
+#         branches: 
+#             - main
     workflow_call:
 env:
   OIDC_ROLE_DEV: github-actions-role
