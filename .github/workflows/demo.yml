@@ -1,10 +1,11 @@
 name: Multi-Job Workflow
-
 on:
   push:
     branches:
       - main
-
+permissions:
+    contents: read
+    id-token: write
 jobs:
   job-1:
     runs-on: ubuntu-latest
