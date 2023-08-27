@@ -1,0 +1,42 @@
+name: Auto Merge on Approval
+
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  auto_merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR Review
+        id: check_review
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            if (pr.base.ref === 'dev' && pr.state === 'open') {
+              const review = context.payload.review;
+              if (review.state === 'approved' && review.user.login === 'prashantkatare') {
+                console.log('PR is approved by prashantkatare@gmail.com');
+                core.setOutput('merge', 'true');
+              } else {
+                console.log('PR is either not approved or not by prashantkatare@gmail.com');
+                core.setOutput('merge', 'false');
+              }
+            } else {
+              console.log('PR is not targeting the dev branch or is not open');
+              core.setOutput('merge', 'false');
+            }
+            
+      - name: Merge PR
+        if: steps.check_review.outputs.merge == 'true'
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout dev
+          git merge --no-ff "${{ github.event.pull_request.head.ref }}"
+          git push
+
