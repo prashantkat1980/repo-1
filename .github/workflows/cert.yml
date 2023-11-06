@@ -1,0 +1,14 @@
+name: Daily Workflow
+on:
+  schedule:
+    - cron: '35 8 * * *'
+  push:
+    branches:
+      - main
+
+jobs:
+  daily_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
