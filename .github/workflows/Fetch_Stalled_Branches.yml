@@ -1,0 +1,46 @@
+name: Fetch Stalled Branches
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 22 * * *' # Runs daily at midnight
+
+jobs:
+  fetch-stalled-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Fetch All Branches
+        run: git fetch --all
+      
+      - name: Get Stalled Branches and Owners
+        id: stalled_branches
+        run: |
+          stalled_branches=$(git branch -r --format="%(committerdate:iso8601) %(refname:lstrip=3)" | sort -k1 -r | awk '{print $2}')
+          echo "::set-output name=stalled_branches::$stalled_branches"
+      
+      - name: Extract Owners' Emails
+        id: branch_owners
+        run: |
+          owners=""
+          for branch in ${{ steps.stalled_branches.outputs.stalled_branches }}; do
+            owner=$(git log -1 --format='%ae' "$branch")
+            owners="$owners$owner\n"
+          done
+          echo "::set-output name=owners::$owners"
+      
+      - name: Send Email
+        continue-on-error: true
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.example.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Stalled Branches and Owners
+          body: |
+            The following branches are stalled along with their owners:
+            ${{ steps.branch_owners.outputs.owners }}
+          to: prashant.kat1980@gmail.com
