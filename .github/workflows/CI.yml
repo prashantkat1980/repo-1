@@ -1,4 +1,4 @@
-name: Contineous Integration
+name: Contineous-Integration
 on:
   workflow_dispatch:
   pull_request:
