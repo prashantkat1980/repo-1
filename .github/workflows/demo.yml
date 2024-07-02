@@ -1,6 +1,6 @@
 name: Multi-Job Workflow
 on:
-  push:
+  workflow_dispatch:
 permissions:
     contents: read
     id-token: write
