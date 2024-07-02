@@ -2,11 +2,9 @@ name: cd dev
 # Controls when the workflow will run
 on: 
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Contineous-Integration"]
-    types: 
-      - completed
-    
+  push:
+    branches:
+      - devl    
 permissions:
   id-token: none
   contents: read
