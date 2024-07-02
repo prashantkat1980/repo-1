@@ -1,0 +1,28 @@
+name: Contineous Integration
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - devl
+      - qual
+env:
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  environment: 'devl'
+jobs:
+  build_ci:
+    name: build ci
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          repository: ${{github.repository}}
+          ref: ${{github.head_ref}}
+      - name: line 1
+        run: |
+             echo "Printing line 1"
+             
+      - name: line 
+        run: |
+             echo "Printing line 2"
+   
