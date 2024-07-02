@@ -5,6 +5,7 @@ on:
     branches:
       - devl
       - qual
+      - main
 env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   environment: 'devl'
